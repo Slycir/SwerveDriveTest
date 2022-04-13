@@ -7,7 +7,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.DriveRobot;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -23,11 +25,17 @@ public class RobotContainer {
   public static final XboxController driverController = new XboxController(Constants.Ports.DRIVER_PORT);
   
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final DriveTrain m_driveTrain = new DriveTrain();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    m_driveTrain.setDefaultCommand(new DriveRobot(m_driveTrain,
+    () -> driverController.getRightX()
+    ));
+
     // Configure the button bindings
     configureButtonBindings();
   }

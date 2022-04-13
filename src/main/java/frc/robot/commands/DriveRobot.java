@@ -5,12 +5,19 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.DriveTrain;
 
 import java.util.function.DoubleSupplier;
 
 public class DriveRobot extends CommandBase {
+
+  DriveTrain m_driveTrain;
+  DoubleSupplier m_turnRate;
+  
   /** Creates a new DriveRobot. */
-  public DriveRobot() {
+  public DriveRobot(DriveTrain driveTrain, DoubleSupplier turnRate) {
+
+
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -20,7 +27,9 @@ public class DriveRobot extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    m_driveTrain.steerGroup.set(m_turnRate.getAsDouble());
+  }
 
   // Called once the command ends or is interrupted.
   @Override

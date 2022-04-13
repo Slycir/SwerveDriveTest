@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import frc.robot.Constants;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 
 public class DriveTrain extends SubsystemBase {
@@ -20,6 +21,8 @@ public class DriveTrain extends SubsystemBase {
   VictorSP frontRightSteer = new VictorSP(Constants.MotorControllers.FRONT_RIGHT_STEER);
   VictorSP backRightSteer = new VictorSP(Constants.MotorControllers.BACK_RIGHT_STEER);
   VictorSP backLeftSteer = new VictorSP(Constants.MotorControllers.BACK_LEFT_STEER);
+
+  public MotorControllerGroup steerGroup = new MotorControllerGroup(frontLeftSteer, frontRightSteer, backRightSteer,  backLeftSteer);
 
   /** Creates a new DriveTrain. */
   public DriveTrain() {
