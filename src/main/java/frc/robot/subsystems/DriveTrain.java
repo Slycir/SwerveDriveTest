@@ -39,7 +39,7 @@ public class DriveTrain extends SubsystemBase {
   PIDController wheelControl = new PIDController(Constants.SteerPID.P, Constants.SteerPID.I, Constants.SteerPID.D);
   /** Creates a new DriveTrain. */
   public DriveTrain() {
-    wheelControl.enableContinuousInput(0, 360);
+    wheelControl.enableContinuousInput(0, 359);
   }
 
   @Override
@@ -66,10 +66,6 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public double toDegrees(Encoder encoder){
-    double toReturn = encoder.get() / 420 * 360 % 360;
-    if(toReturn < 0){
-      toReturn += 360;
-    }
-    return toReturn;
+    return -encoder.get() / 426 * 360 % 360;
   }
 }

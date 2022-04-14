@@ -4,7 +4,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
@@ -39,14 +38,21 @@ public class DriveRobot extends CommandBase {
     // SmartDashboard.putNumber("Power", m_moveX.getAsDouble());
     double power = Math.pow(m_moveX.getAsDouble(), 2) + Math.pow(m_moveY.getAsDouble(), 2);
     if(power < .15){} else {
-      m_driveTrain.setPower(90 - Math.atan(m_moveY.getAsDouble()/m_moveX.getAsDouble())*(180/Math.PI));
-      m_driveTrain.wheelFollow();
+      if(m_moveX.getAsDouble() == 0.0){
+        if(m_moveY.getAsDouble() < 0.0){
+          m_driveTrain.setPower(180.0);
+        } else {
+          m_driveTrain.setPower(0.0);
+        }
+      } else if(m_moveX.getAsDouble() > 0){
+        m_driveTrain.setPower(90 - Math.atan(m_moveY.getAsDouble()/m_moveX.getAsDouble())*(180/Math.PI));
+      } else if(m_moveX.getAsDouble() < 0){
+        m_driveTrain.setPower(270 - Math.atan(m_moveY.getAsDouble()/m_moveX.getAsDouble())*(180/Math.PI));
+      }
       power = power/2;
-      if(m_moveX.getAsDouble() < 0){
-        power = -power;
-     }
       m_driveTrain.driveGroup.set(power);
     }
+    m_driveTrain.wheelFollow();
   }
 
   // Called once the command ends or is interrupted.
