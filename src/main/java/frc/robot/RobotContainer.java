@@ -33,7 +33,8 @@ public class RobotContainer {
   public RobotContainer() {
 
     m_driveTrain.setDefaultCommand(new DriveRobot(m_driveTrain,
-    () -> driverController.getRightX()
+    () -> driverController.getLeftX(),
+    () -> -driverController.getLeftY()
     ));
 
     // Configure the button bindings

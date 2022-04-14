@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
@@ -12,23 +13,40 @@ import java.util.function.DoubleSupplier;
 public class DriveRobot extends CommandBase {
 
   DriveTrain m_driveTrain;
-  DoubleSupplier m_turnRate;
+  DoubleSupplier m_moveX;
+  DoubleSupplier m_moveY;
   
   /** Creates a new DriveRobot. */
-  public DriveRobot(DriveTrain driveTrain, DoubleSupplier turnRate) {
+  public DriveRobot(DriveTrain driveTrain, DoubleSupplier moveX, DoubleSupplier moveY) {
 
+    addRequirements(driveTrain);
 
+    m_driveTrain = driveTrain;
+    m_moveX = moveX;
+    m_moveY = moveY;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_driveTrain.resetEncoders();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_driveTrain.steerGroup.set(m_turnRate.getAsDouble());
+    // SmartDashboard.putNumber("Power", m_moveX.getAsDouble());
+    double power = Math.pow(m_moveX.getAsDouble(), 2) + Math.pow(m_moveY.getAsDouble(), 2);
+    if(power < .15){} else {
+      m_driveTrain.setPower(90 - Math.atan(m_moveY.getAsDouble()/m_moveX.getAsDouble())*(180/Math.PI));
+      m_driveTrain.wheelFollow();
+      power = power/2;
+      if(m_moveX.getAsDouble() < 0){
+        power = -power;
+     }
+      m_driveTrain.driveGroup.set(power);
+    }
   }
 
   // Called once the command ends or is interrupted.
