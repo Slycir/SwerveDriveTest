@@ -38,7 +38,7 @@ public final class Constants {
         public final static double D = 0.0;
     }
     public final class Etcetera {
-        public final static double STEER_RATIO = 7 * 71 * (48/40);
+        public final static double STEER_RATIO = 7 * 71 * (40/48);
         public final static double POWER_FACTOR = 0.5;
     }
 }
