@@ -16,8 +16,8 @@ public final class Constants {
     public final class MotorControllers {
         public final static int FRONT_LEFT_DRIVE = 7;
         public final static int FRONT_RIGHT_DRIVE = 9;
-        public final static int BACK_RIGHT_DRIVE = 3;
-        public final static int BACK_LEFT_DRIVE = 5;
+        public final static int BACK_RIGHT_DRIVE = 5;
+        public final static int BACK_LEFT_DRIVE = 3;
 
         public final static int FRONT_LEFT_STEER = 6;
         public final static int FRONT_RIGHT_STEER = 8;
@@ -36,5 +36,9 @@ public final class Constants {
         public final static double P = 0.013;
         public final static double I = 0.0;
         public final static double D = 0.0;
+    }
+    public final class Etcetera {
+        public final static double STEER_RATIO = 7 * 71 * (48/40);
+        public final static double POWER_FACTOR = 0.5;
     }
 }

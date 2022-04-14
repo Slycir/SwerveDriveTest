@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
 
 import java.util.function.DoubleSupplier;
@@ -36,23 +37,36 @@ public class DriveRobot extends CommandBase {
   @Override
   public void execute() {
     // SmartDashboard.putNumber("Power", m_moveX.getAsDouble());
+    // Get power (Squared by nature of pathagoreans theorum)
     double power = Math.pow(m_moveX.getAsDouble(), 2) + Math.pow(m_moveY.getAsDouble(), 2);
+    // Offsets will be used in "Crab with a twist"
+    double[] placeholderOffsets = {0,0,0,0};
+    double angle = 0.0;
+    // 360 Degree deadband (think circle rather than cross)
     if(power < .15){} else {
+
+      // Handle straight up and down
       if(m_moveX.getAsDouble() == 0.0){
         if(m_moveY.getAsDouble() < 0.0){
-          m_driveTrain.setPower(180.0);
+          angle = (180.0);
         } else {
-          m_driveTrain.setPower(0.0);
+          angle = (0.0);
         }
+
+      // Handle all other inputs
+      // Stick to the right
       } else if(m_moveX.getAsDouble() > 0){
-        m_driveTrain.setPower(90 - Math.atan(m_moveY.getAsDouble()/m_moveX.getAsDouble())*(180/Math.PI));
+        angle = (90 - getExpectedWheelAngle());
+      // Stick to the left
       } else if(m_moveX.getAsDouble() < 0){
-        m_driveTrain.setPower(270 - Math.atan(m_moveY.getAsDouble()/m_moveX.getAsDouble())*(180/Math.PI));
+        angle = (270 - getExpectedWheelAngle());
       }
-      power = power/2;
+      // Speed cap
+      power = power * Constants.Etcetera.POWER_FACTOR;
       m_driveTrain.driveGroup.set(power);
     }
-    m_driveTrain.wheelFollow();
+    // Move wheels towards angles
+    m_driveTrain.wheelFollow(angle, placeholderOffsets);
   }
 
   // Called once the command ends or is interrupted.
@@ -63,5 +77,9 @@ public class DriveRobot extends CommandBase {
   @Override
   public boolean isFinished() {
     return false;
+  }
+
+  double getExpectedWheelAngle() {
+    return Math.atan(m_moveY.getAsDouble()/m_moveX.getAsDouble())*(180/Math.PI);
   }
 }

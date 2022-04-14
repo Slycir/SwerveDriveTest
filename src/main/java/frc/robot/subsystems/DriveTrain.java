@@ -15,8 +15,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveTrain extends SubsystemBase {
 
-  double setpoint = 0;
-
   VictorSP frontLeftDrive = new VictorSP(Constants.MotorControllers.FRONT_LEFT_DRIVE);
   VictorSP frontRightDrive = new VictorSP(Constants.MotorControllers.FRONT_RIGHT_DRIVE);
   VictorSP backRightDrive = new VictorSP(Constants.MotorControllers.BACK_RIGHT_DRIVE);
@@ -29,17 +27,20 @@ public class DriveTrain extends SubsystemBase {
 
   public MotorControllerGroup driveGroup = new MotorControllerGroup(frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive);
 
-  Encoder leadEncoder = new Encoder(0, 1);
+  Encoder FLEncoder = new Encoder(0, 1);
   Encoder FREncoder = new Encoder(2, 3);
   Encoder BREncoder = new Encoder(4, 5);
   Encoder BLEncoder = new Encoder(6, 7);
-  Encoder[] followEncoders = {FREncoder, BREncoder, BLEncoder, leadEncoder};
+
+  Encoder[] steerEncoders = {FREncoder, BREncoder, BLEncoder, FLEncoder};
   VictorSP[] followWheels = {frontRightSteer, backRightSteer, backLeftSteer, frontLeftSteer};
 
   PIDController wheelControl = new PIDController(Constants.SteerPID.P, Constants.SteerPID.I, Constants.SteerPID.D);
   /** Creates a new DriveTrain. */
   public DriveTrain() {
+    // Setup PID loop
     wheelControl.enableContinuousInput(0, 359);
+    wheelControl.setTolerance(0.5);
   }
 
   @Override
@@ -47,25 +48,29 @@ public class DriveTrain extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void setPower(Double power) {
-    wheelControl.setSetpoint(power);
+  // Stop wheel rotation
+  public void noRotation() {
+    for(int x = 0; x < 4; x++){
+      followWheels[x].set(0.0);
+    }
   }
 
-  public void wheelFollow() {
+  // Move wheels to given angle(s)
+  public void wheelFollow(double angle, double[] offsets) {
     SmartDashboard.putNumber("Follow", FREncoder.get());
     for(int x = 0; x < 4; x++){
-      followWheels[x].set(wheelControl.calculate(toDegrees(followEncoders[x])));
+      // PID loop uses .calculate(measurement, setpoint)
+      followWheels[x].set(wheelControl.calculate(toDegrees(steerEncoders[x]), angle + offsets[x]));
     }
   }
 
   public void resetEncoders(){
     for(int x = 0; x < 4; x++){
-      followEncoders[x].reset();
+      steerEncoders[x].reset();
     }
-    setpoint = 0;
   }
 
   public double toDegrees(Encoder encoder){
-    return -encoder.get() / 426 * 360 % 360;
+    return -((encoder.get() / Constants.Etcetera.STEER_RATIO * 360) % 360);
   }
 }
