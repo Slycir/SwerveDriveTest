@@ -71,6 +71,10 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public double toDegrees(Encoder encoder){
-    return -((encoder.get() / Constants.Etcetera.STEER_RATIO * 360) % 360);
+    double toReturn = (-encoder.get() / Constants.Etcetera.STEER_RATIO * 360) % 360;
+    if(toReturn < 0){
+      toReturn += 360;
+    }
+    return toReturn;
   }
 }
