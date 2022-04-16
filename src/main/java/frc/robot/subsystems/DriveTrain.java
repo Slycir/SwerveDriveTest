@@ -39,7 +39,7 @@ public class DriveTrain extends SubsystemBase {
   /** Creates a new DriveTrain. */
   public DriveTrain() {
     // Setup PID loop
-    wheelControl.enableContinuousInput(0, 359);
+    wheelControl.enableContinuousInput(0, 360);
     wheelControl.setTolerance(0.5);
   }
 
