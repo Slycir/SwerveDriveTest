@@ -15,6 +15,8 @@ public class DriveRobot extends CommandBase {
   DriveTrain m_driveTrain;
   DoubleSupplier m_moveX;
   DoubleSupplier m_moveY;
+
+  double angle = 0.0;
   
   /** Creates a new DriveRobot. */
   public DriveRobot(DriveTrain driveTrain, DoubleSupplier moveX, DoubleSupplier moveY) {
@@ -41,7 +43,6 @@ public class DriveRobot extends CommandBase {
     double power = Math.pow(m_moveX.getAsDouble(), 2) + Math.pow(m_moveY.getAsDouble(), 2);
     // Offsets will be used in "Crab with a twist"
     double[] placeholderOffsets = {0,0,0,0};
-    double angle = 0.0;
     // 360 Degree deadband (think circle rather than cross)
     if(power < .15){m_driveTrain.driveGroup.set(0.0);m_driveTrain.noRotation();} else {
 
