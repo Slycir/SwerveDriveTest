@@ -57,8 +57,7 @@ public class DriveTrain extends SubsystemBase {
 
   // Move wheels to given angle(s)
   public void wheelFollow(double angle, double[] offsets) {
-    System.out.println("I'm Working!");
-    SmartDashboard.putNumber("Follow", FREncoder.get());
+    SmartDashboard.putNumber("Follow", toDegrees(FREncoder));
     for(int x = 0; x < 4; x++){
       // PID loop uses .calculate(measurement, setpoint)
       followWheels[x].set(-wheelControl.calculate(toDegrees(steerEncoders[x]), angle + offsets[x]));
@@ -76,13 +75,6 @@ public class DriveTrain extends SubsystemBase {
     if(toReturn < 0){
       toReturn += 360;
     }
-    System.out.println(toReturn);
     return toReturn;
-  }
-
-  public void drive(double power){
-    if(wheelControl.atSetpoint()){
-      driveGroup.set(power);
-    }
   }
 }

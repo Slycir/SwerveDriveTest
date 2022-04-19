@@ -44,7 +44,7 @@ public class DriveRobot extends CommandBase {
     // Offsets will be used in "Crab with a twist"
     double[] placeholderOffsets = {0,0,0,0};
     // 360 Degree deadband (think circle rather than cross)
-    if(power < .15){m_driveTrain.driveGroup.set(0.0);m_driveTrain.noRotation();} else {
+    if(power < .15){m_driveTrain.driveGroup.set(0.0);} else {
 
       // Handle straight up and down
       if(m_moveX.getAsDouble() == 0.0){
@@ -58,17 +58,14 @@ public class DriveRobot extends CommandBase {
       // Stick to the right
       } else if(m_moveX.getAsDouble() > 0){
         angle = (90 - getExpectedWheelAngle());
-        // System.out.println(angle);
       // Stick to the left
       } else if(m_moveX.getAsDouble() < 0){
         angle = (270 - getExpectedWheelAngle());
-        // System.out.println(angle);
       }
       // Speed cap
       power = power * Constants.Etcetera.POWER_FACTOR;
-      // m_driveTrain.drive(power);
-      // m_driveTrain.driveGroup.set(power);
-      // m_driveTrain.wheelFollow(angle, placeholderOffsets);
+      
+      m_driveTrain.driveGroup.set(power);
 
     }
     // Move wheels towards angles

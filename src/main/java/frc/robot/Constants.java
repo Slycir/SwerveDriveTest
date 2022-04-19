@@ -23,17 +23,12 @@ public final class Constants {
         public final static int FRONT_RIGHT_STEER = 8;
         public final static int BACK_RIGHT_STEER = 4;
         public final static int BACK_LEFT_STEER = 2;
-
-        public final static int LEAD_ENCODER = 0;
-        public final static int FOLLOW_ENCODER_1 = 1;
-        public final static int FOLLOW_ENCODER_2 = 2;
-        public final static int FOLLOW_ENCODER_3 = 3;
     }
     public final class Ports {
         public final static int DRIVER_PORT = 0;
     }
     public final class SteerPID {
-        public final static double P = 0.0035;
+        public final static double P = 0.01;
         public final static double I = 0.0;
         public final static double D = 0.0;
     }
