@@ -33,12 +33,12 @@ public final class Constants {
         public final static int DRIVER_PORT = 0;
     }
     public final class SteerPID {
-        public final static double P = 0.013;
+        public final static double P = 0.0035;
         public final static double I = 0.0;
         public final static double D = 0.0;
     }
     public final class Etcetera {
-        public final static double STEER_RATIO = 7 * 71 * (40/48);
+        public final static double STEER_RATIO = 414.16666666666666667; // 7 * 71 * (40/48)
         public final static double POWER_FACTOR = 0.5;
     }
 }
